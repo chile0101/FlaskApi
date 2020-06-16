@@ -1,0 +1,37 @@
+Products : id, name, price, category, vendor
+Items: id, product_id,  size, color
+
+
+GET / -> welcome
+GET /products -> get all products
+GET /products/12 -> get a product 
+POST /products -> Create a new product
+PUT /products/12 -> update a product
+DELETE /products/12 -> delete a product
+
+GET /products/12/items -> get all items of a product #12
+GET /products/12/items/5 
+POST /products/12/items -> create a new item in product #12
+PUT /products/12/items/5 -> update item #5 in product #12
+DELETE /products/12/items/5 ->Deletes item #5 for product #12
+
+
++ Manage Product for Ecommerce: price, category, vendor. And also manage all items (inventory) in Wharehouse (Inventory Item)
+	For example: Product P1(iPhone S12) has 4 items in Warehouse, we should have 4 Inventory Items referenced to this Product P1.
+
++ Create a Promotion Item which will reduce cost 10% for P1. From Time T1 to T2 and having maximum X items.
+	That means:
+		+ When we get price of P1 between T1, T2, we would have 10% less
+		+ If number of sold items reach X, the price should turn to normal price
+
++ API
+	* Create/Update Product
+	* Create Promotion
+	+ GET Product information including price
+
+
+
+
+classmethod
+map,filter,lambda
+item = ItemModel(name, **data)
