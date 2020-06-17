@@ -10,6 +10,7 @@ class ProductModel(db.Model):
     vendor = db.Column(db.String(80))
     
     items = db.relationship('ItemModel', lazy='dynamic')
+    promotions = db.relationship('PromotionModel', lazy='dynamic')
 
     def __init__(self, name, price, category, vendor):
         self.name = name

@@ -40,7 +40,6 @@ class Product(Resource):
 
         if product:
             product.name = data['name']
-            product.price = data['price']
             product.category = data['category']
             product.vendor = data['vendor']
         else:
