@@ -46,3 +46,8 @@ class Promotion(Resource):
             return {"message": "An error occurred inserting the promotion item."}, 500
 
         return promotion_item.json(), 201
+
+class PromotionList(Resource):
+
+    def get(self):
+        return {'promotions': list(map(lambda x: x.json(), PromotionModel.query.all()))}

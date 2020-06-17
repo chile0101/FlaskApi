@@ -1,6 +1,7 @@
 from db import db
-import json
 from datetime import datetime
+import json
+
 
 class PromotionModel(db.Model):
     __tablename__ = 'promotions'
@@ -11,6 +12,7 @@ class PromotionModel(db.Model):
     t2 = db.Column(db.String(30))
     discount = db.Column(db.Integer)
     max_items = db.Column(db.Integer)
+    used_items = db.Column(db.Integer)
     
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     product= db.relationship('ProductModel')
@@ -23,6 +25,7 @@ class PromotionModel(db.Model):
         self.t2 = t2
         self.discount = discount
         self.max_items = max_items
+        self.used_items = 0
     
     def json(self):
         return {'id': self.id,
@@ -31,6 +34,7 @@ class PromotionModel(db.Model):
                 't2':self.t2,
                 'discount': self.discount,
                 'max_items': self.max_items,
+                'used_items': self.used_items,
                 'product_id': self.product_id}
 
     @classmethod
@@ -38,10 +42,27 @@ class PromotionModel(db.Model):
         return cls.query.get(id) 
     
     def save_to_db(self):
-        # print('self >>>>>>>>>>>>>>>>>>>', self.json())
         db.session.add(self)
         db.session.commit()
     
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
+
+    @classmethod
+    def find_promotion_items(cls, product_id):
+        valid_items = []
+        promotion_items = cls.query.filter_by(product_id = product_id).all()
+        # print(promotion_items)
+        for item in promotion_items:
+            item_json = item.json()
+            t1 = datetime.strptime(item_json['t1'], "%d-%m-%Y %H:%M:%S")
+            t2 = datetime.strptime(item_json['t2'], "%d-%m-%Y %H:%M:%S")
+
+            if t1 < datetime.now() < t2:
+                # print(item_json['used_items'])
+                if item_json['used_items'] < item_json['max_items']:
+        
+                    valid_items.append(item)
+            
+        return valid_items

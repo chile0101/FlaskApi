@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from models.product import ProductModel
+from models.promotion import PromotionModel
 
 class Product(Resource):
     
@@ -11,8 +12,18 @@ class Product(Resource):
 
     def get(self, id):
         product = ProductModel.find_by_id(id)
+
+        promotion_items = PromotionModel.find_promotion_items(id)
+        print(promotion_items)
         if product:
-            return product.json()
+            product_json = product.json()
+            if promotion_items:
+                origin_price = product_json['price']
+                sale_price = origin_price
+                for item in promotion_items:
+                    sale_price -= (item.json()['discount']/100)*origin_price
+                product_json['sale_price'] = sale_price
+            return product_json
         return {'message': 'Product not found.'}, 404
 
     def post(self):
