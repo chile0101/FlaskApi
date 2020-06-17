@@ -19,8 +19,8 @@ def create_tables():
 api.add_resource(ProductList, '/products')
 api.add_resource(Product,'/product', '/product/<int:id>')
 
-api.add_resource(ItemList, '/items')
-api.add_resource(Item, '/item', '/item/<int:id>')
+api.add_resource(ItemList, '/product/<int:product_id>/items')
+api.add_resource(Item, '/product/<int:product_id>/item', '/product/<int:product_id>/item/<int:item_id>')
 
 if __name__ == '__main__':
     from db import db

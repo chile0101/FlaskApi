@@ -11,17 +11,17 @@ class ItemModel(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
     product = db.relationship('ProductModel')
 
-    def __init__(self, size, color, product_id):
+    def __init__(self, product_id, size, color):
+        self.product_id = product_id
         self.size = size
         self.color = color
-        self.product_id = product_id
 
     def json(self):
         return {'id': self.id, 'size': self.size, 'color': self.color}
 
     @classmethod
     def find_by_id(cls, id):
-        return cls.query.filter_by(id=id)
+        return cls.query.get(id)
 
     def save_to_db(self):
         db.session.add(self)
