@@ -4,6 +4,7 @@ from flask_restful import Api
 from resources.item import Item, ItemList
 from resources.product import Product, ProductList
 from resources.promotion import Promotion, PromotionList
+from resources.order import Order
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -25,7 +26,8 @@ api.add_resource(Item, '/product/<int:product_id>/item', '/product/<int:product_
 
 api.add_resource(PromotionList,'/promotions')
 api.add_resource(Promotion,'/promotion')
-# api.add_url_rule('/sell/<int:item_id>', 'sell', sell)
+
+api.add_resource(Order,'/sell/<int:item_id>')
 
 if __name__ == '__main__':
     from db import db

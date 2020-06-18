@@ -14,7 +14,7 @@ class Product(Resource):
         product = ProductModel.find_by_id(id)
 
         promotion_items = PromotionModel.find_promotion_items(id)
-        print(promotion_items)
+        # print(promotion_items)
         if product:
             product_json = product.json()
             if promotion_items:

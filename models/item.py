@@ -17,7 +17,7 @@ class ItemModel(db.Model):
         self.color = color
 
     def json(self):
-        return {'id': self.id, 'size': self.size, 'color': self.color}
+        return {'id': self.id, 'size': self.size, 'color': self.color,'product_id':self.product_id}
 
     @classmethod
     def find_by_id(cls, id):

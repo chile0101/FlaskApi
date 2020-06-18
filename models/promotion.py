@@ -62,7 +62,6 @@ class PromotionModel(db.Model):
             if t1 < datetime.now() < t2:
                 # print(item_json['used_items'])
                 if item_json['used_items'] < item_json['max_items']:
-        
                     valid_items.append(item)
             
         return valid_items
