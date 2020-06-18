@@ -59,8 +59,8 @@ class PromotionModel(db.Model):
             t1 = datetime.strptime(item_json['t1'], "%d-%m-%Y %H:%M:%S")
             t2 = datetime.strptime(item_json['t2'], "%d-%m-%Y %H:%M:%S")
 
+            print('nowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',datetime.now())
             if t1 < datetime.now() < t2:
-                # print(item_json['used_items'])
                 if item_json['used_items'] < item_json['max_items']:
                     valid_items.append(item)
             
