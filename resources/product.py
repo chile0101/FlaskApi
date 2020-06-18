@@ -26,7 +26,7 @@ class Product(Resource):
                 sale_price = origin_price
                 for item in promotion_items:
                     sale_price -= (item.json()['discount']/100)*origin_price
-                product_json['sale_price'] = sale_price
+                product_json['sale_price'] = float("{:.2f}".format(sale_price))
             return {
                 'status': True,
                 'message': 'Success',

@@ -29,7 +29,7 @@ class Order(Resource):
                 p_item.used_items += 1
                 p_item.save_to_db()
         
-        order = OrderModel(item_id,sold_price)
+        order = OrderModel(item_id, float("{:.2f}".format(sold_price)))
 
         order.save_to_db()
         
