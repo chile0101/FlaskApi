@@ -1,5 +1,6 @@
 from db import db
 from datetime import datetime
+from utils.utc_converter import utc_to_local
 import json
 
 
@@ -59,8 +60,8 @@ class PromotionModel(db.Model):
             t1 = datetime.strptime(item_json['t1'], "%d-%m-%Y %H:%M:%S")
             t2 = datetime.strptime(item_json['t2'], "%d-%m-%Y %H:%M:%S")
 
-            print('nowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',datetime.now())
-            if t1 < datetime.now() < t2:
+            # print('nowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',datetime.now())
+            if t1 < utc_to_local(datetime.now()) < t2:
                 if item_json['used_items'] < item_json['max_items']:
                     valid_items.append(item)
             
