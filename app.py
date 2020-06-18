@@ -14,10 +14,6 @@ app.config['PROPAGATE_EXCEPTIONS'] = True
 api = Api(app)
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
 base_path = "/api"
 api.add_resource(ProductList, base_path + '/products')
 api.add_resource(Product, base_path +'/product', base_path + '/product/<int:id>')
