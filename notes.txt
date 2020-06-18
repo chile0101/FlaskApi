@@ -1,6 +1,7 @@
 Products : id, name, price, category, vendor
 Items: id, product_id,  size, color
-Promotions: id, t1, t2, discount, product_id, max_items
+Promotions: id, t1, t2, discount, product_id, max_items, used_items
+Order 
 
 GET / -> welcome
 GET /products -> get all products

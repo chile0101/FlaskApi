@@ -18,16 +18,17 @@ api = Api(app)
 def create_tables():
     db.create_all()
 
-api.add_resource(ProductList, '/products')
-api.add_resource(Product,'/product', '/product/<int:id>')
+base_path = "/api"
+api.add_resource(ProductList, base_path + '/products')
+api.add_resource(Product, base_path +'/product', base_path + '/product/<int:id>')
 
-api.add_resource(ItemList, '/product/<int:product_id>/items')
-api.add_resource(Item, '/product/<int:product_id>/item', '/product/<int:product_id>/item/<int:item_id>') 
+api.add_resource(ItemList, base_path + '/product/<int:product_id>/items')
+api.add_resource(Item, base_path + '/product/<int:product_id>/item', base_path + '/product/<int:product_id>/item/<int:item_id>') 
 
-api.add_resource(PromotionList,'/promotions')
-api.add_resource(Promotion,'/promotion')
+api.add_resource(PromotionList, base_path + '/promotions')
+api.add_resource(Promotion, base_path + '/promotion')
 
-api.add_resource(Order,'/sell/<int:item_id>')
+api.add_resource(Order, base_path + '/sell/<int:item_id>')
 
 if __name__ == '__main__':
     from db import db
