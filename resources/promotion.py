@@ -14,24 +14,33 @@ class Promotion(Resource):
     parser.add_argument('discount', type=int, required=True, help="This field cannot be left blank !")
     parser.add_argument('max_items', type=int, required=True, help="This field can not be left blank !")
 
-
-    def get(self):
-        pass
     def post(self):
 
         data = Promotion.parser.parse_args()
         
         if ProductModel.find_by_id(data['product_id']) is None:
-            return {'message':'Product not found.'},400
+            return {
+                'status': False,
+                'message':"Product with id = '{}' not found.".format(data['product_id']),
+                'data': None
+            }
         
         t1 = datetime.strptime(data['t1'], "%d-%m-%Y %H:%M:%S")
         t2 = datetime.strptime(data['t2'], "%d-%m-%Y %H:%M:%S")
 
-        if t1 > t2:
-            return {'message': 'Start time must not be later than end time.'},400
+        if t1 >= t2:
+            return {
+                'status': False,
+                'message': 'Start time must not be later than end time.',
+                'data': None
+            }
         
         if data['discount'] > 100:
-            return {'message': 'discount must not be bigger 100.'},400
+            return {
+                'status': False,
+                'message': 'Discount must not be bigger 100.',
+                'data': None
+            }
         
         promotion_item = PromotionModel(data['product_id'],
                                         data['desc'],
@@ -43,11 +52,23 @@ class Promotion(Resource):
         try:
             promotion_item.save_to_db()
         except:
-            return {"message": "An error occurred inserting the promotion item."}, 500
+            return {
+                'status': False,
+                'message': 'An error occurred inserting the promotion item.',
+                'data': None
+            }, 500
 
-        return promotion_item.json(), 201
+        return {
+            'status': True,
+            'success': 'Promotion item created success,',
+            'data': promotion_item.json()
+        }
 
 class PromotionList(Resource):
 
     def get(self):
-        return {'promotions': list(map(lambda x: x.json(), PromotionModel.query.all()))}
+        return {
+            'status': True,
+            'message': 'Success',
+            'data': list(map(lambda x: x.json(), PromotionModel.query.all()))
+        }

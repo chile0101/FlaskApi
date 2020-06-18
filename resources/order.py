@@ -10,7 +10,11 @@ class Order(Resource):
     def get(self, item_id):
         item = ItemModel.find_by_id(item_id)
         if item is None:
-            return {'message': 'Item not found'}, 404
+            return {
+                'status': False,
+                'message': 'Item not found',
+                'data': None
+            }
 
         product_id = item.json()['product_id']
 
@@ -28,10 +32,14 @@ class Order(Resource):
         order = OrderModel(item_id,sold_price)
 
         order.save_to_db()
-        # print('item>>>>>>>',item)
+        
         item.delete_from_db()
 
-        return order.json(),201
+        return {
+            'status': True,
+            'message': 'A item has been sold.',
+            'data': order.json()
+        }
             
         
         

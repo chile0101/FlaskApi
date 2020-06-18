@@ -9,24 +9,26 @@ class Item(Resource):
     parser.add_argument('size', type=str)
     parser.add_argument('color', type=str)
 
-    def get(self, id):
-        item = ItemModel.find_by_id(id)
-        if item:
-            return item.json()
-        return {'message': 'Item not found'}, 404
-
     def post(self, product_id):
     
         data = Item.parser.parse_args()
 
-        item = ItemModel(product_id, **data)
-        # print(item)
-        try:
-            item.save_to_db()
-        except:
-            return {"message": "An error occurred inserting the item."}, 500
+        if ProductModel.find_by_id(product_id) is None:
+            return {
+                'status':False,
+                'message': 'Product not found',
+                'data': None
+            }
 
-        return item.json(), 201
+        item = ItemModel(product_id, **data)
+      
+        item.save_to_db()
+
+        return {
+            'status':True,
+            'message': 'A new item added to the product',
+            'data': item.json()
+        }
 
     def delete(self, product_id, item_id):
         item = ItemModel.find_by_id(item_id)
@@ -43,33 +45,19 @@ class Item(Resource):
         else:
             return {'message': 'Product not found'}, 404
 
-    def put(self, product_id, item_id):
-        data = Item.parser.parse_args()
-
-        item = ItemModel.find_by_id(item_id)
-        product = ProductModel.find_by_id(product_id)
-        
-        if product:
-            if item:
-                if item.product_id != product_id:
-                    return {'message': 'This item not in product'}, 400
-                item.size = data['size']
-                item.color = data['color']
-                
-            else:
-                item = ItemModel(product_id,**data)
-            
-            item.save_to_db()
-            return item.json()
-
-        else:
-            return {'message': 'Product not found'}, 404
 
 class ItemList(Resource):
     def get(self, product_id):
-        #print('>>>>>>>>>>>>',product_id)
+        
         product = ProductModel.find_by_id(product_id)
         if product:
-            return {'items': product.json()['items']}
+            return {
+                'status': True,
+                'message': 'Success',
+                'data': product.json()['items']}
         else:
-           return {'message': 'Product not found'}, 404
+            return {
+                'status':False,
+                'message': 'Product not found',
+                'data': None
+            }
